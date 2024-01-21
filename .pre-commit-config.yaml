@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.12.1  # Use the specific version of black
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2  # Use the specific version of isort
+    hooks:
+      - id: isort
+        language_version: python3
