@@ -9,10 +9,10 @@ services:
       service:
         name: serverless-devs-application
       function:
-        name: dashboard-backend-l4xk
+        name: dashboard-backend-igaj
         description: Initialize
         runtime: python3.9
-        handler: handler.handler
+        handler: handler.lambda_handler
         memorySize: 128
         cpu: 0.05
         timeout: 60
