@@ -1,5 +1,2 @@
-yfinance
-pandas
-aliyun-python-sdk-core
-python-dotenv
-oss2
+yfinance==0.2.35
+pandas==2.2.0

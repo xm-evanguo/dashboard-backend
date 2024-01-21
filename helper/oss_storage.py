@@ -1,30 +1,36 @@
 import os
 
-import oss2
-from dotenv import load_dotenv
-
 
 class OSSStorage:
     def __init__(self):
-        dotenv_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-        load_dotenv(dotenv_path)
-        access_key_id = os.getenv("ACCESS_KEY_ID")
-        access_key_secret = os.getenv("ACCESS_KEY_SECRET")
-        bucket_name = os.getenv("BUCKET_NAME")
-        endpoint = os.getenv("ENDPOINT")
+        self.data_path = "/data/"
 
-        self.bucket = oss2.Bucket(
-            oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name
-        )
+    def list(self, path=""):
+        full_path = os.path.join(self.data_path, path)
+        return [
+            f
+            for f in os.listdir(full_path)
+            if os.path.isfile(os.path.join(full_path, f))
+        ]
 
-    def list(self, path):
-        return [obj.key for obj in oss2.ObjectIterator(self.bucket, prefix=path)]
-
-    def put(self, obj, path):
-        return self.bucket.put_object(path, obj)
+    def put(self, content, path):
+        full_path = os.path.join(self.data_path, path)
+        with open(full_path, "wb") as file:
+            file.write(content)
 
     def delete(self, path):
-        return self.bucket.delete_object(path)
+        full_path = os.path.join(self.data_path, path)
+        if os.path.exists(full_path):
+            os.remove(full_path)
 
     def get(self, path):
-        return self.bucket.get_object(path).read()
+        full_path = os.path.join(self.data_path, path)
+        with open(full_path, "rb") as file:
+            return file.read()
+
+
+# Example usage:
+# storage = OSSStorage()
+# storage.put(b'Hello, OSS!', 'example.txt')
+# print(storage.get('example.txt'))
+# storage.delete('example.txt')
