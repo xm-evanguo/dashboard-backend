@@ -53,13 +53,16 @@ class FXService:
         self.oss_storage.put(csv_content, self.fx_data_path)
 
     def add_todays_data_if_missing(self, data_frame):
+        # Convert 'date' column to string to ensure proper comparison
+        data_frame["date"] = data_frame["date"].astype(str)
+
         today_str = datetime.now().strftime("%Y-%m-%d")
-        if today_str not in data_frame["timestamp"].values:
+        if today_str not in data_frame["date"].values:
             logging.info(f"Today's data ({today_str}) is missing, adding it.")
             latest_rate = self.fetch_latest_exchange_rate()
             if latest_rate is not None:
                 new_row = pd.DataFrame(
-                    {"timestamp": [today_str], "exchange_rate": [latest_rate]}
+                    {"date": [today_str], "exchange_rate": [latest_rate]}
                 )
                 new_data_frame = pd.concat([data_frame, new_row], ignore_index=True)
                 logging.info(f"Added today's rate to DataFrame: {latest_rate}")

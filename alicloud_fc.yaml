@@ -8,6 +8,13 @@ services:
       region: us-west-1
       service:
         name: serverless-devs-application
+      ossMountConfig:
+        mountPoints:
+          - endpoint: oss-us-west-1-internal.aliyuncs.com # OSS服务地址
+            bucketName: pppenguin-dashboard-data # OSS bucket名称
+            bucketPath: /
+            mountDir: /data/ # 函数计算目录
+            readOnly: false # 是否挂载为只读
       function:
         name: dashboard-backend-igaj
         description: Initialize
@@ -18,3 +25,6 @@ services:
         timeout: 60
         codeUri: ./
         diskSize: 512
+        layers: 
+          - acs:fc:us-west-1:5257474114053005:layers/dashboard-backend-requiement-layer/versions/5
+
