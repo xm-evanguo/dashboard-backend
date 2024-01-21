@@ -1,0 +1,20 @@
+edition: 1.0.0
+name: my-framework-app
+access: default
+services:
+  framework:
+    component: fc
+    props:
+      region: us-west-1
+      service:
+        name: serverless-devs-application
+      function:
+        name: dashboard-backend-l4xk
+        description: Initialize
+        runtime: python3
+        handler: handler.lambda_handler
+        memorySize: 128
+        cpu: 0.05
+        timeout: 60
+        codeUri: ./
+        diskSize: 512
