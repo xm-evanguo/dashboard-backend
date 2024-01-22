@@ -11,7 +11,7 @@ services:
         role: acs:ram::5257474114053005:role/aliyunfcserverlessdevsrole
       ossMountConfig:
         mountPoints:
-          - endpoint: oss-us-west-1-internal.aliyuncs.com # OSS服务地址
+          - endpoint: http://oss-us-west-1-internal.aliyuncs.com # OSS服务地址
             bucketName: pppenguin-dashboard-data # OSS bucket名称
             bucketPath: /
             mountDir: /data/ # 函数计算目录
