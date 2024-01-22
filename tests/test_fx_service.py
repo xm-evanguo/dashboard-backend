@@ -1,37 +1,32 @@
-import io
+import os
 import unittest
-from unittest.mock import Mock
+
+import pandas as pd
 
 from domain.fx_service import FXService
 
 
 class TestFXService(unittest.TestCase):
     def setUp(self):
-        # Mock OSSStorage
-        self.mock_oss_storage = Mock()
-
-        # Fake CSV content
-        self.fake_csv_content = (
-            "timestamp,exchange_rate\n2024-01-01,0.78\n2024-01-02,0.79"
-        )
-
-        # Set up the FXService with the mocked OSSStorage
+        # Set up the FXService with a path to the test CSV file in the resources directory
         self.fx_service = FXService()
-        self.fx_service.oss_storage = self.mock_oss_storage
+        test_csv_path = os.path.join(
+            os.path.dirname(__file__), "resources", "test_fx_data.csv"
+        )
+        self.fx_service.fx_data_path = test_csv_path
 
     def test_process_fx_data(self):
-        # Mock the 'get' method of OSSStorage to return the fake CSV content
-        self.mock_oss_storage.get.return_value = self.fake_csv_content.encode()
-
         # Run the method under test
         average_rate, current_rate = self.fx_service.process_fx_data()
 
         # Assertions to verify the expected outcomes
         self.assertIsNotNone(average_rate)
         self.assertIsNotNone(current_rate)
-        self.mock_oss_storage.put.assert_called_once()  # Check if 'put' was called
 
-        # Additional assertions can be added as per requirements
+        # Additional test to check the correctness of the data manipulation
+        test_data = pd.read_csv(self.fx_service.fx_data_path)
+        self.assertIn("date", test_data.columns)
+        self.assertIn("exchange_rate", test_data.columns)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ services:
       region: us-west-1
       service:
         name: serverless-devs-application
+        role: acs:ram::5257474114053005:role/aliyunfcserverlessdevsrole
       ossMountConfig:
         mountPoints:
           - endpoint: oss-us-west-1-internal.aliyuncs.com # OSS服务地址

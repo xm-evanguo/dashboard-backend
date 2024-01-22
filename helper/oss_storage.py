@@ -15,8 +15,8 @@ class OSSStorage:
 
     def put(self, content, path):
         full_path = os.path.join(self.data_path, path)
-        with open(full_path, "wb") as file:
-            file.write(content)
+        with open(full_path, "wb") as file:  # Ensure binary mode 'wb' is used
+            file.write(content.encode())  # Encode the string content to bytes
 
     def delete(self, path):
         full_path = os.path.join(self.data_path, path)
